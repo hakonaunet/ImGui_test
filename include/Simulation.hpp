@@ -3,12 +3,21 @@
 #ifndef SIMULATION_HPP
 #define SIMULATION_HPP
 
+#include <SFML/Graphics.hpp>
+#include "SharedData.hpp"
+
 class Simulation {
+public:
+    Simulation(SharedData& data);
 
-    public:
-        Simulation();
-        void update(); // Update simulation logic
-        // Other simulation methods
-    };
+    void update();
+    sf::Vector2f getPosition() const;
+    sf::Vector2f getInnerSize() const;
 
-#endif
+private:
+    SharedData& sharedData;
+
+    void checkCollision();
+};
+
+#endif // SIMULATION_HPP

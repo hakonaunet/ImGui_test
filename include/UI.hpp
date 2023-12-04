@@ -4,13 +4,20 @@
 #define UI_HPP
 
 #include "imgui.h"
+#include "imgui-SFML.h"
+#include "SFML/Graphics.hpp"
+
+#include "SharedData.hpp"
 
 class UI {
-
     public:
-        UI();
-        void render(); // Render ImGui components
-        // Other UI methods
-    };
+        UI(SharedData& data) : sharedData(data) {}
+
+        void render(); // Implement the UI rendering logic
+
+    private:
+        SharedData& sharedData;
+};
+
 
 #endif // UI_HPP

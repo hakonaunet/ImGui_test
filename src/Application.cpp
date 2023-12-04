@@ -2,14 +2,14 @@
 
 #include "Application.hpp"
 
-Application::Application() {
-    // Initialize any application-specific resources or states
-    // Initialize UI and Simulation instances if needed
+Application::Application() : simulation(sharedData), ui(sharedData) {
+    // Initialize the application
 }
 
+
 void Application::run() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Physics Simulation");
-    // Initialize ImGui with SFML
+    sf::Vector2f screensize(2000.0f, 1300.0f);
+    sf::RenderWindow window(sf::VideoMode(screensize.x, screensize.y), "Physics Simulation");    // Initialize ImGui with SFML
     
     bool ImGui_initialization = ImGui::SFML::Init(window);
     if (!ImGui_initialization) {
@@ -29,8 +29,9 @@ void Application::run() {
                 window.close();
         }
 
-        // Update the simulation
-        simulation.update();
+        if (sharedData.isSimulationRunning) {
+            simulation.update();
+        }
 
         // Start the ImGui frame
         ImGui::SFML::Update(window, deltaClock.restart());
@@ -38,10 +39,11 @@ void Application::run() {
 
         // Clear the window
         window.clear();
-        // Render your simulation here
-        // ...
-
-        // Render ImGui over everything else
+        if (sharedData.isSimulationRunning) {
+            sf::RectangleShape rectangle(sf::Vector2f(simulation.getInnerSize()));
+            rectangle.setPosition(simulation.getPosition());
+            window.draw(rectangle);
+        }
         ImGui::SFML::Render(window);
 
         // Display the rendered frame
